@@ -10,7 +10,7 @@ from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, Todo, User
 #JWT - SECURITY
-from werkzeug.security import generate_password_hash, check_password_hash
+#from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import datetime
 
@@ -54,8 +54,8 @@ def login():
         if not user:
             return jsonify({"error": "User not found"}), 400
         
-        if not check_password_hash(user.password, password):
-            return jsonify({"error": "Wrong password"}), 400
+        #if not check_password_hash(user.password, password):
+        #    return jsonify({"error": "Wrong password"}), 400
         
         # Create Access Token
         expiration_date = datetime.timedelta(days=1)
@@ -88,8 +88,8 @@ def lista_usuario(id):
 @app.route('/user', methods=["POST"])
 def crear_usuarios():
     data = request.get_json()
-    hashed_password = generate_password_hash(data["password"],method='sha256')
-    user1 = User(username=data["username"],email=data["email"],password=hashed_password)
+    #hashed_password = generate_password_hash(data["password"],method='sha256')
+    user1 = User(username=data["username"],email=data["email"],password=data["password"])
     db.session.add(user1)
     db.session.commit()
     return jsonify("Message : Se adiciono un usuario!"),200
